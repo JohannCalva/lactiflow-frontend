@@ -2,3 +2,34 @@
 body {
   background-color: #f4f6f9;
 }
+
+/* Layout Styles */
+.layout-wrapper {
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-link {
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+  background-color: rgba(255,255,255,0.1);
+  color: #fff !important;
+}
+
+.content-wrapper {
+  overflow-x: hidden;
+}
+
+.top-navbar {
+  border-bottom: 1px solid #dee2e6;
+}
