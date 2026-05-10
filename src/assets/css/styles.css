@@ -1,17 +1,28 @@
-/* Custom Lactiflow styles */
-body {
+body, html {
+  margin: 0;
+  padding: 0;
   background-color: #f4f6f9;
+  width: 100%;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* Layout Styles */
 .layout-wrapper {
   min-height: 100vh;
+  width: 100%;
+  display: flex;
 }
 
 .sidebar {
   width: 250px;
   min-height: 100vh;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  flex-shrink: 0; /* Evita que el sidebar se encoja */
 }
 
 .sidebar-link {
@@ -19,6 +30,7 @@ body {
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s;
+  display: block; /* Para asegurar el área clicable completa */
 }
 
 .sidebar-link:hover, .sidebar-link.active {
@@ -27,7 +39,8 @@ body {
 }
 
 .content-wrapper {
-  overflow-x: hidden;
+  overflow-x: auto; /* Evita desbordamientos */
+  width: 100%;
 }
 
 .top-navbar {
