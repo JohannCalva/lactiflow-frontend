@@ -22,7 +22,7 @@ Asegúrate de tener instalados:
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/JohannCalva/lactiflow-frontend
-   cd lactiflow-client
+   cd lactiflow-frontend
    ```
 
 2. Instala las dependencias:
@@ -64,9 +64,3 @@ El frontend protege las rutas y muestra u oculta módulos basándose en roles:
 ## 🔗 Enlaces Relacionados
 
 - **Repositorio del Backend:** [https://github.com/JohannCalva/lactiflow-backend](https://github.com/JohannCalva/lactiflow-backend)
-
-## 🚀 Deploy
-
-La aplicación está lista para producción en Vercel. Puedes acceder a la versión en vivo desde el siguiente enlace:
-
-👉 **[URL_DEL_DEPLOY_AQUI]**
