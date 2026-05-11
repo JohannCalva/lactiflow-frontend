@@ -39,6 +39,8 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
                     <Badge bg={row[col.key] ? 'success' : 'secondary'} pill>
                       {row[col.key] ? 'Activo' : 'Inactivo'}
                     </Badge>
+                  ) : col.render ? (
+                    col.render(row)
                   ) : (
                     row[col.key] || <span className="text-muted fst-italic">N/A</span>
                   )}
