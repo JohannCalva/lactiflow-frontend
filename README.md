@@ -1,16 +1,72 @@
-# React + Vite
+# LactiFlow - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Panel de administración tipo SPA (Single Page Application) desarrollado para gestionar el inventario, catálogo, clientes y entregas de una fábrica de lácteos. Este proyecto consume la API de `lactiflow-server`.
 
-Currently, two official plugins are available:
+## 🛠 Tecnologías Usadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend:** React 18 + Vite
+- **Routing:** React Router DOM
+- **UI:** Bootstrap + React Bootstrap
+- **Cliente HTTP:** Axios
+- **Autenticación:** JWT (JSON Web Tokens) guardado en `localStorage`
+- **Deploy:** Vercel
 
-## React Compiler
+## 📋 Requisitos Previos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Asegúrate de tener instalados:
+- [Node.js](https://nodejs.org/) (versión 16+ recomendada)
+- [NPM](https://www.npmjs.com/) (generalmente incluido con Node.js)
 
-## Expanding the ESLint configuration
+## ⚙️ Instalación y Configuración Local
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/JohannCalva/lactiflow-frontend
+   cd lactiflow-client
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Levanta el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+## 🔐 Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto y agrega la URL base del backend:
+
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+## 📂 Estructura del Proyecto
+
+```text
+src/
+├── api/          # Configuración de Axios e interceptores (manejo de tokens)
+├── assets/       # Estilos globales y recursos estáticos
+├── components/   # Componentes reutilizables (Sidebar, Navbar, Modales, DataTable)
+├── context/      # Contexto global (AuthContext para estado de sesión)
+├── pages/        # Vistas completas de la aplicación (Login, Modulos CRUD)
+└── services/     # Funciones HTTP para consumir los endpoints REST
+```
+
+## 🛡️ Roles y Permisos
+
+El frontend protege las rutas y muestra u oculta módulos basándose en roles:
+- **Admin (Administrador):** Acceso total al sistema. Puede gestionar Tipos de Negocio, Clientes, Productos, Usuarios y Entregas.
+- **Emprendedor:** Acceso restringido. Únicamente puede interactuar con el Dashboard y el módulo de Entregas.
+
+## 🔗 Enlaces Relacionados
+
+- **Repositorio del Backend:** [https://github.com/JohannCalva/lactiflow-backend](https://github.com/JohannCalva/lactiflow-backend)
+
+## 🚀 Deploy
+
+La aplicación está lista para producción en Vercel. Puedes acceder a la versión en vivo desde el siguiente enlace:
+
+👉 **[URL_DEL_DEPLOY_AQUI]**
