@@ -290,6 +290,7 @@ const Suggestions = () => {
                 <tr>
                   <th className="border-bottom-0 py-3">Producto</th>
                   <th className="border-bottom-0 py-3">Cantidad total</th>
+                  <th className="border-bottom-0 py-3">Unidad</th>
                 </tr>
               </thead>
               <tbody className="border-top-0">
@@ -297,6 +298,7 @@ const Suggestions = () => {
                   <tr key={t.product_name ?? i}>
                     <td className="py-3">{t.product_name}</td>
                     <td className="py-3">{t.total_qty}</td>
+                    <td className="py-3">{t.product_unit ?? "unidades"}</td>
                   </tr>
                 ))}
               </tbody>
