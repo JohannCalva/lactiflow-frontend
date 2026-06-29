@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Alert, Table, Spinner } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
-import api from "../api/axios";
+import suggestionsService from "../services/suggestions.service";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +20,7 @@ const Dashboard = () => {
     setError("");
     setIsGenerating(true);
     try {
-      const resp = await api.post("/suggestions/generate");
+      const resp = await suggestionsService.generate();
       const data = resp.data || {};
       setSummary({
         processed: data.processed ?? 0,

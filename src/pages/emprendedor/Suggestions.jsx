@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Alert, Table, Badge, Spinner, Button } from "react-bootstrap";
-import api from "../../api/axios";
+import suggestionsService from "../../services/suggestions.service";
 
 const Suggestions = () => {
   const today = new Date().toISOString().slice(0, 10);
@@ -15,8 +15,8 @@ const Suggestions = () => {
     setError("");
     try {
       const results = await Promise.allSettled([
-        api.get("/suggestions", { params: { date: selectedDate } }),
-        api.get("/suggestions/summary", { params: { date: selectedDate } }),
+        suggestionsService.get(selectedDate),
+        suggestionsService.summary(selectedDate),
       ]);
 
       const suggestionsRes = results[0];
