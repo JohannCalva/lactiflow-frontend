@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import authService from "../services/auth.service";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", { email, password });
+      const response = await authService.login(email, password);
       const { token, user } = response.data;
 
       login(user, token);
