@@ -13,7 +13,7 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="alert alert-info text-center mt-3 shadow-sm">
+      <div className="alert alert-empty text-center mt-3 shadow-sm">
         No hay registros para mostrar.
       </div>
     );
@@ -25,14 +25,17 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
         <thead className="bg-light text-muted">
           <tr>
             {columns.map((col, index) => (
-              <th key={index} className="border-bottom-0 py-3">{col.label}</th>
+              <th key={index} className="border-bottom-0 py-3 label-caps">{col.label}</th>
             ))}
-            <th className="border-bottom-0 py-3 text-end pe-4">Acciones</th>
+            <th className="border-bottom-0 py-3 text-end pe-4 label-caps">Acciones</th>
           </tr>
         </thead>
         <tbody className="border-top-0">
           {data.map((row) => (
-            <tr key={row.id} style={{ opacity: row.is_active === false ? 0.6 : 1 }}>
+            <tr
+              key={row.id}
+              className={row.is_active === false ? 'data-table-row-inactive' : ''}
+            >
               {columns.map((col, index) => (
                 <td key={index} className="py-3">
                   {col.key === 'is_active' ? (
@@ -46,7 +49,7 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
                   )}
                 </td>
               ))}
-              <td className="py-3 text-end pe-3" style={{ minWidth: '150px' }}>
+              <td className="py-3 text-end pe-3 data-table-actions-cell">
                 <Button variant="outline-primary" size="sm" className="me-2 rounded-pill px-3" onClick={() => onEdit(row)}>
                   Editar
                 </Button>
