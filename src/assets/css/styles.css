@@ -49,3 +49,49 @@ body, html {
 .top-navbar {
   border-bottom: 1px solid #dfbfbc;
 }
+
+/* Suggestions page */
+.week-nav-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.week-day-btn {
+  min-width: 0;
+}
+
+.suggestions-search-wrapper {
+  min-width: 240px;
+}
+
+.suggestions-search-icon {
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.suggestions-search-input {
+  padding-left: 40px;
+}
+
+.suggestions-product-select {
+  min-width: 200px;
+}
+
+/* DataTable */
+.data-table-row-inactive {
+  opacity: 0.6;
+}
+
+.data-table-actions-cell {
+  min-width: 150px;
+}
+
+/* Login */
+.login-container {
+  min-height: 100vh;
+}
+
+.login-card {
+  width: 400px;
+}

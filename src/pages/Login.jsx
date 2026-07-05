@@ -41,10 +41,9 @@ const Login = () => {
 
   return (
     <Container
-      className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
+      className="d-flex align-items-center justify-content-center login-container"
     >
-      <Card style={{ width: "400px" }} className="shadow-sm">
+      <Card className="shadow-sm login-card">
         <Card.Body>
           <h2 className="text-center mb-4 text-primary">Lactiflow</h2>
           {error && <Alert variant="danger">{error}</Alert>}
