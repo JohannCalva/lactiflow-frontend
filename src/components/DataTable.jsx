@@ -13,7 +13,7 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="alert alert-info text-center mt-3 shadow-sm">
+      <div className="alert alert-empty text-center mt-3 shadow-sm">
         No hay registros para mostrar.
       </div>
     );
@@ -25,9 +25,9 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
         <thead className="bg-light text-muted">
           <tr>
             {columns.map((col, index) => (
-              <th key={index} className="border-bottom-0 py-3">{col.label}</th>
+              <th key={index} className="border-bottom-0 py-3 label-caps">{col.label}</th>
             ))}
-            <th className="border-bottom-0 py-3 text-end pe-4">Acciones</th>
+            <th className="border-bottom-0 py-3 text-end pe-4 label-caps">Acciones</th>
           </tr>
         </thead>
         <tbody className="border-top-0">

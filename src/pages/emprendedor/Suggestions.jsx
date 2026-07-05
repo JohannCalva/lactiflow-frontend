@@ -219,7 +219,9 @@ const Suggestions = () => {
                 }
                 style={{ minWidth: 0 }}
               >
-                <div className="small text-muted">{weekdayShort(d)}</div>
+                <div className={"small" + (isSelected ? "" : " text-muted")}>
+                  {weekdayShort(d)}
+                </div>
                 <div className="fw-bold">{d.getDate()}</div>
               </Button>
             );
@@ -244,8 +246,8 @@ const Suggestions = () => {
           <p className="mt-2 text-muted">Cargando sugerencias...</p>
         </div>
       ) : data.length === 0 ? (
-        <div className="alert alert-info text-center mt-3 shadow-sm">
-          No hay registros para mostrar.
+        <div className="alert alert-empty text-center mt-3 shadow-sm">
+          No hay sugerencias para mostrar.
         </div>
       ) : (
         <div className="table-responsive bg-white shadow-sm rounded">
@@ -280,7 +282,7 @@ const Suggestions = () => {
       <div className="mt-4">
         <h5 className="mb-3">Totales por producto</h5>
         {totals.length === 0 ? (
-          <div className="alert alert-info text-center mt-1 shadow-sm">
+          <div className="alert alert-empty text-center mt-1 shadow-sm">
             No hay totales para mostrar.
           </div>
         ) : (
