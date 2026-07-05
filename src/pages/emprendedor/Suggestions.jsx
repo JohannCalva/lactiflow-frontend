@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Alert, Table, Badge, Spinner, Button } from "react-bootstrap";
+import React, { useState, useEffect, useMemo } from "react";
+import { Alert, Table, Badge, Spinner, Button, Form } from "react-bootstrap";
 import suggestionsService from "../../services/suggestions.service";
 
 const Suggestions = () => {
@@ -9,6 +9,8 @@ const Suggestions = () => {
   const [totals, setTotals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [clientSearch, setClientSearch] = useState("");
+  const [productFilter, setProductFilter] = useState("");
 
   const fetchSuggestions = async (selectedDate) => {
     setIsLoading(true);
@@ -121,6 +123,20 @@ const Suggestions = () => {
 
   const weekDates = getWeekDates(date);
 
+  const productOptions = useMemo(() => {
+    const names = new Set(data.map((row) => row.product).filter(Boolean));
+    return Array.from(names).sort((a, b) => a.localeCompare(b));
+  }, [data]);
+
+  const filteredData = useMemo(() => {
+    const term = clientSearch.trim().toLowerCase();
+    return data.filter((row) => {
+      const matchesClient = !term || row.client.toLowerCase().includes(term);
+      const matchesProduct = !productFilter || row.product === productFilter;
+      return matchesClient && matchesProduct;
+    });
+  }, [data, clientSearch, productFilter]);
+
   const monthName = (d) => d.toLocaleString(undefined, { month: "long" });
   const weekHeader = `${monthName(weekDates[0])} ${weekDates[0].getDate()} - ${monthName(
     weekDates[6],
@@ -150,8 +166,7 @@ const Suggestions = () => {
             <Button
               variant="light"
               onClick={() => changeWeek(-1)}
-              className="border rounded-circle p-0"
-              style={{ width: 36, height: 36 }}
+              className="border rounded-circle p-0 week-nav-btn"
               aria-label="Previous week"
             >
               <svg
@@ -180,8 +195,7 @@ const Suggestions = () => {
             <Button
               variant="light"
               onClick={() => changeWeek(1)}
-              className="border rounded-circle p-0"
-              style={{ width: 36, height: 36 }}
+              className="border rounded-circle p-0 week-nav-btn"
               aria-label="Next week"
             >
               <svg
@@ -214,16 +228,69 @@ const Suggestions = () => {
                 size="sm"
                 onClick={() => setDate(iso)}
                 className={
-                  "flex-fill d-flex flex-column justify-content-center align-items-center py-2 " +
+                  "flex-fill d-flex flex-column justify-content-center align-items-center py-2 week-day-btn " +
                   (isSelected ? "text-white" : "")
                 }
-                style={{ minWidth: 0 }}
               >
-                <div className="small text-muted">{weekdayShort(d)}</div>
+                <div className={"small" + (isSelected ? "" : " text-muted")}>
+                  {weekdayShort(d)}
+                </div>
                 <div className="fw-bold">{d.getDate()}</div>
               </Button>
             );
           })}
+        </div>
+      </div>
+
+      <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+        <div className="position-relative flex-grow-1 suggestions-search-wrapper">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="position-absolute text-muted suggestions-search-icon"
+          >
+            <circle
+              cx="7"
+              cy="7"
+              r="5.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M11.5 11.5L14.5 14.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+          <Form.Control
+            type="text"
+            placeholder="Buscar cliente..."
+            value={clientSearch}
+            onChange={(e) => setClientSearch(e.target.value)}
+            className="rounded-pill shadow-sm suggestions-search-input"
+          />
+        </div>
+
+        <div className="d-flex align-items-center gap-2">
+          <span className="text-muted text-uppercase small fw-semibold">
+            Filtro:
+          </span>
+          <Form.Select
+            value={productFilter}
+            onChange={(e) => setProductFilter(e.target.value)}
+            className="rounded-pill shadow-sm suggestions-product-select"
+          >
+            <option value="">Todos los productos</option>
+            {productOptions.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </Form.Select>
         </div>
       </div>
 
@@ -243,9 +310,11 @@ const Suggestions = () => {
           <Spinner animation="border" variant="primary" />
           <p className="mt-2 text-muted">Cargando sugerencias...</p>
         </div>
-      ) : data.length === 0 ? (
-        <div className="alert alert-info text-center mt-3 shadow-sm">
-          No hay registros para mostrar.
+      ) : filteredData.length === 0 ? (
+        <div className="alert alert-empty text-center mt-3 shadow-sm">
+          {data.length === 0
+            ? "No hay sugerencias para mostrar."
+            : "No hay sugerencias que coincidan con la búsqueda."}
         </div>
       ) : (
         <div className="table-responsive bg-white shadow-sm rounded">
@@ -261,7 +330,7 @@ const Suggestions = () => {
               </tr>
             </thead>
             <tbody className="border-top-0">
-              {data.map((row) => (
+              {filteredData.map((row) => (
                 <tr key={row.id}>
                   <td className="py-3">{row.client}</td>
                   <td className="py-3">{row.business_type}</td>
@@ -280,7 +349,7 @@ const Suggestions = () => {
       <div className="mt-4">
         <h5 className="mb-3">Totales por producto</h5>
         {totals.length === 0 ? (
-          <div className="alert alert-info text-center mt-1 shadow-sm">
+          <div className="alert alert-empty text-center mt-1 shadow-sm">
             No hay totales para mostrar.
           </div>
         ) : (
