@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button, Alert, Form, Row, Col } from 'react-bootstrap';
 import DataTable from '../components/DataTable';
 import CrudModal from '../components/CrudModal';
@@ -29,6 +29,47 @@ const Deliveries = () => {
   });
   const [modalError, setModalError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Search and sort
+  const [clientSearch, setClientSearch] = useState('');
+  const [sortKey, setSortKey] = useState('delivered_at');
+  const [sortDir, setSortDir] = useState('desc');
+
+  const handleSort = (key) => {
+    if (key === sortKey) {
+      setSortDir(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortDir('asc');
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    const term = clientSearch.trim().toLowerCase();
+    let filtered = term
+      ? data.filter(row => row.client_name.toLowerCase().includes(term))
+      : [...data];
+
+    filtered.sort((a, b) => {
+      let va, vb;
+      if (sortKey === 'delivered_at') {
+        va = new Date(a[sortKey] || 0).getTime();
+        vb = new Date(b[sortKey] || 0).getTime();
+      } else {
+        va = a[sortKey];
+        vb = b[sortKey];
+        if (typeof va === 'number' && typeof vb === 'number') {
+          return sortDir === 'asc' ? va - vb : vb - va;
+        }
+        va = (va || '').toString().toLowerCase();
+        vb = (vb || '').toString().toLowerCase();
+      }
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return filtered;
+  }, [data, clientSearch, sortKey, sortDir]);
 
   const columns = [
     { label: 'Cliente', key: 'client_name' },
@@ -177,12 +218,24 @@ const Deliveries = () => {
 
       {error && <Alert variant="danger" dismissible onClose={() => setError('')} className="shadow-sm">{error}</Alert>}
 
+      <Form.Control
+        type="text"
+        placeholder="Buscar cliente..."
+        value={clientSearch}
+        onChange={(e) => setClientSearch(e.target.value)}
+        className="rounded-pill shadow-sm mb-3"
+        style={{ maxWidth: '320px' }}
+      />
+
       <DataTable 
         columns={columns} 
-        data={data} 
+        data={sortedData} 
         isLoading={isLoading} 
         onEdit={handleOpenEdit} 
         onDelete={handleDelete} 
+        sortKey={sortKey}
+        sortDir={sortDir}
+        onSort={handleSort}
       />
 
       <CrudModal

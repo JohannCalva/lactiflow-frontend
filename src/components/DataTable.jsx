@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Badge, Spinner } from 'react-bootstrap';
 
-const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
+const DataTable = ({ columns, data, onEdit, onDelete, isLoading, sortKey, sortDir, onSort }) => {
   if (isLoading) {
     return (
       <div className="text-center my-5">
@@ -25,7 +25,17 @@ const DataTable = ({ columns, data, onEdit, onDelete, isLoading }) => {
         <thead className="bg-light text-muted">
           <tr>
             {columns.map((col, index) => (
-              <th key={index} className="border-bottom-0 py-3 label-caps">{col.label}</th>
+              <th
+                key={index}
+                className={`border-bottom-0 py-3 label-caps${onSort ? ' user-select-none' : ''}`}
+                style={onSort ? { cursor: 'pointer' } : undefined}
+                onClick={onSort ? () => onSort(col.key) : undefined}
+              >
+                {col.label}
+                {sortKey === col.key && (
+                  <span className="ms-1 small">{sortDir === 'asc' ? '\u25B2' : '\u25BC'}</span>
+                )}
+              </th>
             ))}
             <th className="border-bottom-0 py-3 text-end pe-4 label-caps">Acciones</th>
           </tr>
